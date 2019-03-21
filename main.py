@@ -2,6 +2,7 @@ import threading
 import time
 import random
 import queue
+import time
 from statistics import median
 
 class myThread(threading.Thread):
@@ -32,6 +33,12 @@ def iodstrr(threads):
     temp.append(threads.burst)
   
   TimeQuantum=median(temp)
+  while(True):
+    start=time.time()
+    for i in threads:
+      if(i.start == time.time()-start):
+        i.run()
+    
   
   
   
