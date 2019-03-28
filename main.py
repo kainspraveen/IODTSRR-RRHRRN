@@ -6,43 +6,95 @@ import time
 from statistics import median
 
 
-def task(param):
-  sum=0
-  for i in range(param):
-    sum+=i
 
-class MyThread(threading.Thread):
-  def __init__(self, threadID, name,start, burst):
-    threading.Thread.__init__(self):
-      self.threadID = threadID
-      self.name = name
-      self.burst = burst
-      self.start = start
-      
-  def run(self):
-     pass
-     
+class MyThread:
+	def __init__(self,id,burst,start):
+		self.ThreadID = id
+		self.Name = None
+		self.burst = burst
+		self.start = start
+		self.rburst=burst
+		self.waiting=None
+		self.TurnAround=None
+                        
+
 threads=[]
 for i in range(10):
-  threads.append(myThread(i, str(i),random.randint(0,6),random.randint(5,25)))
+	threads.append(MyThread(i,random.randint(0,25),random.randint(0,6)))
 
 
 
 def iodstrr(threads):
-  q=Queue.PriorityQueue(len(threads))
-  
-  for i in threads:
-    q.put(i.burst, i)
-  
-  temp = []
-  for i in threads:
-    temp.append(threads.burst)
-  
-  TimeQuantum=median(temp)
-  while(not q.isempty()):
-    start=time.time()
+	rem_bt=[]
+
+    #for i in range(len(threads)):
+    #	rem_bt[i]=threads[i].burst
     
-    
+	t=0
+    #readyq=[]
+	threads.sort(key=lambda t : t.start)
+
+	while(True):
+
+		for i in threads:
+			if(i.start <= t):
+				rem_bt.append(i)
+
+		rem_bt=list(filter(lambda a: a.rburst != 0, rem_bt))
+    	#rem_bt.sort(key = lambda x : x.rburst, rem_bt)
+		temp=[i.rburst for i in rem_bt]
+		if(len(rem_bt) != 0):
+			quantum=median(temp)
+
+
+
+		done=True
+		rem_bt.sort(key= lambda rem_bt : rem_bt.rburst)
+    	
+    	#present=0
+		for i in range(len(rem_bt)):
+
+			if(rem_bt[i].rburst > 0): 
+				done = False
+                #print("**")  
+                  
+				if (rem_bt[i].rburst > quantum):   
+					t += quantum   
+					rem_bt[i].rburst -= quantum  
+                  
+ 
+				else:  
+					t = t + rem_bt[i].rburst 
+					rem_bt[i].waiting = t - rem_bt[i].burst 
+					rem_bt[i].rburst = 0
+
+		if(done == True):
+			break
+
+	print("TurnAround Times:")
+	j=1
+	wait=0
+	turn=0
+	for i in threads:
+		print("Process", j," : ", end="")
+		print(i.burst+i.waiting)
+		turn+=(i.burst+i.waiting)
+		j+=1
+
+	print("Waiting Times: ")
+	j=1
+	for i in threads:
+		print("Process", j, ":", end="")
+		print(i.waiting)
+		wait+=i.waiting
+
+	wait=wait/len(threads)
+	turn=turn/len(threads)
+	print("Average Waiting Time :", wait)
+	print("Average TurnAround Time: ", turn)
+
+iodstrr(threads)
+
   
   
   
