@@ -21,7 +21,7 @@ class Process : #process block stores details of the process
 
 def round_robin(process_list, time_slice) :
 
-	process_list.sort() #sorts according to the arrival time
+	#process_list.sort() #sorts according to the arrival time
 	time = 0			#time counter
 	process_count = 0	#keeps track of the next process to be added to the que based on arrival time
 	n = len(process_list)
