@@ -24,7 +24,7 @@ for i in range(10):
 
 
 
-def iodstrr(threads):
+def iodtsrr(threads):
 	rem_bt=[]
 
     #for i in range(len(threads)):
@@ -100,7 +100,7 @@ def iodstrr(threads):
 	print("Average Waiting Time :", wait)
 	print("Average TurnAround Time: ", turn)
 
-iodstrr(threads)
+iodtsrr(threads)
 
   
   
