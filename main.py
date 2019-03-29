@@ -33,12 +33,19 @@ def iodstrr(threads):
 	t=0
     #readyq=[]
 	threads.sort(key=lambda t : t.start)
+	mark=0
 
 	while(True):
+		done=True
 
-		for i in threads:
-			if(i.start <= t):
-				rem_bt.append(i)
+		for i in range(mark,len(threads)):
+			if(threads[i].start <= t):
+				rem_bt.append(threads[i])
+				mark=i
+				
+		if(len(rem_bt)==0):
+			t+=1
+			continue
 
 		rem_bt=list(filter(lambda a: a.rburst != 0, rem_bt))
     	#rem_bt.sort(key = lambda x : x.rburst, rem_bt)
@@ -48,7 +55,6 @@ def iodstrr(threads):
 
 
 
-		done=True
 		rem_bt.sort(key= lambda rem_bt : rem_bt.rburst)
     	
     	#present=0
@@ -87,6 +93,7 @@ def iodstrr(threads):
 		print("Process", j, ":", end="")
 		print(i.waiting)
 		wait+=i.waiting
+		j+=1
 
 	wait=wait/len(threads)
 	turn=turn/len(threads)
