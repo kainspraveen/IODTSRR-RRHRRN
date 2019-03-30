@@ -1,4 +1,4 @@
-import threading
+from threading import Thread
 import time
 import random
 import queue
@@ -19,6 +19,16 @@ class MyThread:
                         
 
 threads=[]
+def task(mark, threads,t,rem_bt):
+	while(True):
+		for i in range(mark,len(threads)):
+					if(threads[i].start <= t):
+						rem_bt.append(threads[i])
+						mark=i
+		#print("__*__")
+		if(mark==len(threads)-1):
+			break
+
 for i in range(10):
 	threads.append(MyThread(i,random.randint(2,25),random.randint(0,6)))
 	#print("proceess ", i, " : ", threads[len(threads)-1:].burst, " , ", threads[len(threads)-1:].start)
@@ -41,10 +51,10 @@ def iodstrr(threads):
 	while(True):
 		done=True
 
-		for i in range(mark,len(threads)):
-			if(threads[i].start <= t):
-				rem_bt.append(threads[i])
-				mark=i
+		thread=Thread(target=task, args=(mark,threads, t,rem_bt))
+		thread.daemon = True
+		thread.start()
+		#thread.join()
 		if(len(rem_bt)==0):
 			t+=1
 			continue
@@ -75,9 +85,11 @@ def iodstrr(threads):
 					t = t + rem_bt[i].rburst 
 					rem_bt[i].waiting = t - rem_bt[i].burst 
 					rem_bt[i].rburst = 0
+			#time.sleep(100)
 
 		if(done == True):
 			break
+			
 
 	print("TurnAround Times:")
 	j=1
@@ -103,5 +115,6 @@ def iodstrr(threads):
 	print("Average Waiting Time :", wait)
 	print("Average TurnAround Time: ", turn)
 
-iodstrr(threads)
-
+new=Thread(target=iodstrr, args=(threads,))
+new.start()
+new.join()
