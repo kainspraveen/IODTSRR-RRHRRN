@@ -14,7 +14,7 @@ class Process :
 		self.arrival = arrival	#arrival time
 		self.rr = rr 			#response ratio
 		self.rbt = burst 		#remaining burst time, initialised to burst time
-		self.uwt = uwt 			#updated waiting time
+		self.uwt = 0 - arrival 	#updated waiting time
 
 	def __lt__(self,other) :
 		if self.arrival < other.arrival :
@@ -59,8 +59,6 @@ def HRRN(process_list):
 		
 
 		print("RBT:", HRR.rbt)
-
-		flag = None
 
 		if (HRR.rbt<=quantum):
 			print("%s is complete." % HRR.name)
@@ -122,11 +120,11 @@ def HRRN(process_list):
 
 
 process_list = []
-process_list.append(Process('P1',30,0))
-process_list.append(Process('P2',42,0))
-process_list.append(Process('P3',50,0))
-process_list.append(Process('P4',85,0))
-process_list.append(Process('P5',97,0))
+process_list.append(Process('P1',80,0))
+process_list.append(Process('P2',72,2))
+process_list.append(Process('P3',65,3))
+process_list.append(Process('P4',50,4))
+process_list.append(Process('P5',43,5))
 #time_slice = math.floor((3+6+4+5+2)/5)
 #print(time_slice)
 
