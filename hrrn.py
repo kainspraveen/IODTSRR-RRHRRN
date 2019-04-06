@@ -31,7 +31,7 @@ class Process :
 			return False
 
 
-def HRRN(static_process_list,display=False):
+def HRRN(static_process_list,verbose=False):
 	n = len(static_process_list)
 	cs=0
 	process_list=sorted(static_process_list) 
@@ -100,14 +100,7 @@ def HRRN(static_process_list,display=False):
 		
 		cs+=1
 
-<<<<<<< HEAD
-
-
-
-
-	
-#HRRN(process_list)
-=======
+	if verbose==True:
 		print("\n\t\tName\tUWT\tRBT\tRR")
 		for process in static_process_list:
 			for p in rQueue:
@@ -127,17 +120,17 @@ def HRRN(static_process_list,display=False):
 			print(process.name+"\t"+str(process.uwt)+"\t"+str(process.rbt)+"\t"+str(process.rr))
 
 
-	print("\nWaiting Times:")
-	for process in completed:
-		print(process.name, process.uwt)
+		print("\nWaiting Times:")
+		for process in completed:
+			print(process.name, process.uwt)
 
-	if display==True:
-		avg_wt=sum(process.uwt for process in completed)/n
-		avg_tat=(sum(process.uwt for process in completed)+sum(process.burst for process in completed))/n
-		print("\nAverage waiting time: \t\t\t%f" % avg_wt)
-		print("Average turnaround time: \t\t%f" % avg_tat)
-		print("Total number of context switches: \t%d" % int(cs - 1))
-		print("Seconds taken for max function: \t%f" % perf)
+
+			avg_wt=sum(process.uwt for process in completed)/n
+			avg_tat=(sum(process.uwt for process in completed)+sum(process.burst for process in completed))/n
+			print("\nAverage waiting time: \t\t\t%f" % avg_wt)
+			print("Average turnaround time: \t\t%f" % avg_tat)
+			print("Total number of context switches: \t%d" % int(cs - 1))
+			print("Seconds taken for max function: \t%f" % perf)
 
 
 if __name__ == '__main__':
@@ -150,5 +143,5 @@ if __name__ == '__main__':
 	#time_slice = math.floor((3+6+4+5+2)/5)
 	#print(time_slice)
 
-	HRRN(process_list, display=True)
->>>>>>> 2b9b56a3487588034a856ad8f04a69d471a5b3ba
+	HRRN(process_list, verbose=True)
+
