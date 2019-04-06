@@ -2,7 +2,6 @@ from threading import Thread
 import time
 import random
 import queue
-import time
 from statistics import median
 
 
