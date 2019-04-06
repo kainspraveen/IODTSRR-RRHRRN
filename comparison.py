@@ -1,4 +1,4 @@
-import dqrrr
+import dqrr
 import hrrn
 
 
@@ -18,9 +18,11 @@ def init_MyThread(process_list) :
 	thread_list = []
 
 	for i in process_list :
-		obj = dqrrr.MyThread(i.name, i.burst, i.arrival)
+		obj = dqrr.MyThread(i.name, i.burst, i.arrival)
 
 		thread_list.append(obj)
+
+	return thread_list
 
 
 def init_Process(process_list) :
@@ -32,8 +34,23 @@ def init_Process(process_list) :
 
 		Process_list.append(obj)
 
+	return thread_list
+
+thread_list = []
+Process_list = []
+
+thread_list = init_MyThread(process_list)
+Process_list = init_Process(process_list)
+
+def turnaround_time() :
+	pass
 
 
-dqrrr.iodstrr_thread(thread_list)
 
-dqrrr.HRRN(Process_list)
+
+print("dqrr")
+#dqrr.iodstrr_thread(thread_list)
+print("hrrn")
+
+hrrn.HRRN(Process_list)
+

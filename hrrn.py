@@ -92,23 +92,9 @@ def HRRN(process_list):
 		
 		cs+=1
 
-		print("\nName\tUWT\tRBT\tRR")
-		for process in process_list:
-			for p in rQueue:
-				if process.name==p.name:
-					process=p
-					break 
-			else:
-				for p in completed:
-					if process.name==p.name:
-						process=p
-						break
-
-			print(process.name+"\t"+str(process.uwt)+"\t"+str(process.rbt)+"\t"+str(process.rr))
 
 
-	print("\nWaiting Times:")
-	for process in completed:
-		print(process.name, process.uwt)
+
+
 	
-HRRN(process_list)
+#HRRN(process_list)

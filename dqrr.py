@@ -18,7 +18,7 @@ class MyThread:
 		self.TurnAround=None
                         
 
-threads=[]
+#threads=[]
 def task(mark, threads,t,rem_bt):
 	while(True):
 		for i in range(mark,len(threads)):
@@ -29,12 +29,12 @@ def task(mark, threads,t,rem_bt):
 		if(mark==len(threads)-1):
 			break
 
-for i in range(10):
+'''for i in range(10):
 	threads.append(MyThread(i,random.randint(2,25),random.randint(0,6)))
-	#print("proceess ", i, " : ", threads[len(threads)-1:].burst, " , ", threads[len(threads)-1:].start)
+	#print("proceess ", i, " : ", threads[len(threads)-1:].burst, " , ", threads[len(threads)-1:].start)'''
 
-for i in threads:
-	print(i.burst, i.start)
+''''for i in threads:
+	print(i.burst, i.start)'''
 
 
 def iodstrr(threads):
@@ -48,14 +48,17 @@ def iodstrr(threads):
 	threads.sort(key=lambda t : t.start)
 	mark=0
 
+	print("while")
+
+
 	while(True):
 		done=True
-
 
 		thread=Thread(target=task, args=(mark,threads, t,rem_bt))
 		thread.daemon = True
 		thread.start()
 		#thread.join()
+
 
 		for i in range(mark,len(threads)):
 			if(threads[i].start <= t):
@@ -107,12 +110,14 @@ def iodstrr(threads):
 
 
 def iodstrr_thread(threads) :
+	print("iodstrr")
 	new=Thread(target=iodstrr, args=(threads,))
 	new.start()
 	new.join()
+	print("iodstrr done")
 
 
-iodstrr_thread(threads)
+#iodstrr_thread(threads)
 
 
   
