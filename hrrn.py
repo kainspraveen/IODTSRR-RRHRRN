@@ -25,7 +25,11 @@ class Process :
 			return False
 
 
-def HRRN(static_process_list,verbose=False,performance_mode=False):
+def printer(info, flag):
+	if flag==True:
+		print(info)
+
+def HRRN(static_process_list,verbose=True,performance_mode=False):
 	n = len(static_process_list)
 	cs=0
 	process_list=sorted(static_process_list) 
@@ -35,16 +39,20 @@ def HRRN(static_process_list,verbose=False,performance_mode=False):
 	rQueue=list(filter(lambda obj : obj.arrival <= time, process_list))
 
 	while process_list!=[]:
+
+		if rQueue==[]:
+			time+=1
+			continue
 	
-		print("\nTime:", time)
+		printer("\nTime: %d" % time,verbose)
 		#quantum time
 		quantum=math.floor(sum(process.rbt for process in process_list)/len(process_list))
-		print("Quantum:", quantum)
+		printer("Quantum: %d" % quantum,verbose)
 		#calculating response ratios
-		print("RRs:")
+		printer("RRs:", verbose)
 		for process in rQueue:
 			rr=(process.uwt+process.rbt)/process.rbt 
-			print(process.name, rr)
+			printer(process.name+':'+str(rr), verbose)
 			process.rr=rr
 		
 
@@ -55,13 +63,13 @@ def HRRN(static_process_list,verbose=False,performance_mode=False):
 		end=t.perf_counter()
 		perf=end-start
 
-		print("-> %s added." % HRR.name) 
+		printer("-> %s added." % HRR.name, verbose) 
 		
 
-		print("RBT:", HRR.rbt)
+		printer("RBT: %d" % HRR.rbt, verbose)
 
 		if (HRR.rbt<=quantum):
-			print("%s is complete." % HRR.name)
+			printer("%s is complete." % HRR.name, verbose)
 			#removing completed processes
 			rQueue.remove(HRR)
 			process_list.remove(HRR)
@@ -77,7 +85,7 @@ def HRRN(static_process_list,verbose=False,performance_mode=False):
 	
 			HRR.rbt-=quantum
 			time+=quantum
-			print("Incomplete >> RBT:", HRR.rbt)
+			printer("Incomplete >> RBT: %d" % HRR.rbt, verbose)
 			time_passed=quantum
 			rQueue=list(filter(lambda obj : obj.arrival <= time, process_list)) #updating rqueue
 
@@ -140,5 +148,5 @@ if __name__ == '__main__':
 	#time_slice = math.floor((3+6+4+5+2)/5)
 	#print(time_slice)
 
-	HRRN(process_list, verbose=True)
+	HRRN(process_list, verbose=False)
 
