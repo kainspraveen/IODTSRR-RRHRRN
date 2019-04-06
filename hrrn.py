@@ -37,13 +37,20 @@ def HRRN(static_process_list,verbose=True,performance_mode=False):
 	completed=[]
 	#rQueue=copy.deepcopy(process_list) 
 	rQueue=list(filter(lambda obj : obj.arrival <= time, process_list))
-
-	while process_list!=[]:
-
-		if rQueue==[]:
-			time+=1
-			continue
 	
+	"""if verbose==True:
+		print("\n\t\tName\tUWT\tRBT\tRR")
+		for process in static_process_list:
+		
+			print('Not Arrived', end='>\t')
+
+			print(process.name+"\t"+str(process.uwt)+"\t"+str(process.rbt)+"\t"+str(process.rr))
+	"""
+	while process_list!=[]:
+		if rQueue==[]:
+			process_list.sort() 
+			time=process_list[0].arrival #assigning time to the shortest arrival time of all processes
+			rQueue=list(filter(lambda obj : obj.arrival <= time, process_list))
 		printer("\nTime: %d" % time,verbose)
 		#quantum time
 		quantum=math.floor(sum(process.rbt for process in process_list)/len(process_list))
@@ -91,13 +98,11 @@ def HRRN(static_process_list,verbose=True,performance_mode=False):
 
 		#update waiting times of all other process
 
-	
+
 		for process in rQueue:
 			if process != HRR:	 
 				process.uwt+=time_passed
-				
 
-	
 					
 		
 		cs+=1
@@ -134,6 +139,7 @@ def HRRN(static_process_list,verbose=True,performance_mode=False):
 		print("Average turnaround time: \t\t%f" % avg_tat)
 		print("Total number of context switches: \t%d" % int(cs - 1))
 		print("Seconds taken for max function: \t%f" % perf)
+		print("END")
 
 	if performance_mode==True:
 		return [avg_wt,avg_tat,cs]
