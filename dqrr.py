@@ -104,38 +104,19 @@ def iodstrr(threads):
 			break
 
 
-	print("TurnAround Times:")
-	j=1
-	wait=0
-	turn=0
-	
-	for i in threads:
-		print("Process", j," : ", end="")
-		print(i.burst+i.waiting)
-		turn+=(i.burst+i.waiting)
-		j+=1
 
-	print("Waiting Times: ")
-	j=1
-	for i in threads:
-		print("Process", j, ":", end="")
-		print(i.waiting)
-		wait+=i.waiting
-		j+=1
 
-	wait=wait/len(threads)
-	turn=turn/len(threads)
-	print("Average Waiting Time :", wait)
-	print("Average TurnAround Time: ", turn)
+def iodstrr_thread(threads) :
+	new=Thread(target=iodstrr, args=(threads,))
+	new.start()
+	new.join()
 
-new=Thread(target=iodstrr, args=(threads,))
-new.start()
-new.join()
+
+iodstrr_thread(threads)
 
 
   
   
 
-iodstrr(threads)
 
 
