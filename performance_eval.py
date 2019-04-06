@@ -31,14 +31,14 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 		else:
 			g_arrival=random.randint(1,100)
 		Pname='P'+str(i+1)
-		#print(Pname, g_burst, g_arrival)
+
 		process_list.append(Process(Pname,g_burst,g_arrival))
 		perf=HRRN(process_list,verbose=False,performance_mode=True)
 		
 		
 		
 		perc=math.ceil(((i+1)/n)*100)
-		#print(perc)
+
 		if pperc!=perc:
 			pperc=perc
 			printer("█", end='')
