@@ -25,7 +25,7 @@ class Process :
 			return False
 
 
-def printer(info, flag,end='\n'):
+def printer(info, flag=True,end='\n'):
 	if flag==True:
 		print(info,end=end)
 
