@@ -122,10 +122,10 @@ def HRRN(static_process_list,verbose=False,performance_mode=False):
 
 
 
-			print("\nAverage waiting time: \t\t\t%f" % avg_wt)
-			print("Average turnaround time: \t\t%f" % avg_tat)
-			print("Total number of context switches: \t%d" % int(cs - 1))
-			print("Seconds taken for max function: \t%f" % perf)
+		print("\nAverage waiting time: \t\t\t%f" % avg_wt)
+		print("Average turnaround time: \t\t%f" % avg_tat)
+		print("Total number of context switches: \t%d" % int(cs - 1))
+		print("Seconds taken for max function: \t%f" % perf)
 
 	if performance_mode==True:
 		return [avg_wt,avg_tat,cs]
