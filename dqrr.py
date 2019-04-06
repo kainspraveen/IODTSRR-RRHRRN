@@ -106,13 +106,13 @@ def iodstrr(threads):
 
 
 
-def iodsrrr_thread(threads) :
+def iodstrr_thread(threads) :
 	new=Thread(target=iodstrr, args=(threads,))
 	new.start()
 	new.join()
 
 
-iodsrr_thread(threads)
+iodstrr_thread(threads)
 
 
   
