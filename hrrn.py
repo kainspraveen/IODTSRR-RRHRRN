@@ -111,21 +111,4 @@ def HRRN(process_list):
 	for process in completed:
 		print(process.name, process.uwt)
 	
-	avg_wt=sum(process.uwt for process in completed)/n
-	avg_tat=(sum(process.uwt for process in completed)+sum(process.burst for process in completed))/n
-	print("\nAverage waiting time: \t\t\t%f" % avg_wt)
-	print("Average turnaround time: \t\t%f" % avg_tat)
-	print("Total number of context switches: \t%d" % int(cs - 1))
-
-
-
-process_list = []
-process_list.append(Process('P1',80,0))
-process_list.append(Process('P2',72,2))
-process_list.append(Process('P3',65,3))
-process_list.append(Process('P4',50,4))
-process_list.append(Process('P5',43,5))
-#time_slice = math.floor((3+6+4+5+2)/5)
-#print(time_slice)
-
 HRRN(process_list)
