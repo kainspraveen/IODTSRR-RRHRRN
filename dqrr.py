@@ -128,9 +128,13 @@ def iodstrr(threads):
 	print("Average Waiting Time :", wait)
 	print("Average TurnAround Time: ", turn)
 
-new=Thread(target=iodstrr, args=(threads,))
-new.start()
-new.join()
+def iodsrrr_thread(threads) :
+	new=Thread(target=iodstrr, args=(threads,))
+	new.start()
+	new.join()
+
+
+iodsrr_thread(threads)
 
 
   
