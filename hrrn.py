@@ -3,12 +3,6 @@ from operator import attrgetter
 import time as t
 import copy
 
-def get_time_slice(total, n) :
-
-	mean = math.floor(total/n)
-
-	return mean
-
 class Process :
 	def __init__(self, name = None, burst = 0, arrival = 0, rr = 0, rbt = 0, uwt = 0):
 		self.name = name
