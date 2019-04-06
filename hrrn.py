@@ -25,9 +25,9 @@ class Process :
 			return False
 
 
-def printer(info, flag):
+def printer(info, flag,end='\n'):
 	if flag==True:
-		print(info)
+		print(info,end=end)
 
 def HRRN(static_process_list,verbose=True,performance_mode=False):
 	n = len(static_process_list)
