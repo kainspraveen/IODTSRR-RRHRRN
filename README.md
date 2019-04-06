@@ -1,6 +1,10 @@
-# IODTSRR
+# IODTSRR-RRHRRN
 Improved Optimum Dynamic Time Slicing Round Robin Algorithm
 <br/>
 Round Robin with Highest Response Ratio-Next
 
-$$\textrm{Response Ratio} = {\textrm{Waiting Time} + \textrm{Service Time}\over \textrm{Service Time}}$$
+<br/>
+_**schedule.py**_ is the _**IODTSRR**_ implementation with processes having same arrival times
+<br/>
+_**main.py**_ is the final implementation.
+
