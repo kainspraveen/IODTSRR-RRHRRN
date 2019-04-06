@@ -40,7 +40,7 @@ def HRRN(static_process_list,display=False):
 	#rQueue=copy.deepcopy(process_list) 
 	rQueue=list(filter(lambda obj : obj.arrival <= time, process_list))
 
-	while rQueue!=[]:
+	while process_list!=[]:
 	
 		print("\nTime:", time)
 		#quantum time
