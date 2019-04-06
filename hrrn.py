@@ -1,5 +1,7 @@
 import math
 from operator import attrgetter 
+import time as t
+import copy
 
 def get_time_slice(total, n) :
 
@@ -14,7 +16,7 @@ class Process :
 		self.arrival = arrival	#arrival time
 		self.rr = rr 			#response ratio
 		self.rbt = burst 		#remaining burst time, initialised to burst time
-		self.uwt = 0 - arrival 	#updated waiting time
+		self.uwt = 0   		    #updated waiting time
 
 	def __lt__(self,other) :
 		if self.arrival < other.arrival :
@@ -28,23 +30,25 @@ class Process :
 		else :
 			return False
 
-def HRRN(process_list):
-	n = len(process_list)
-	time=0
+
+def HRRN(static_process_list):
+	n = len(static_process_list)
 	cs=0
-	rQueue=sorted(process_list) #Ready queue
+	process_list=sorted(static_process_list) 
+	time=process_list[0].arrival #assigning time to the shortest arrival time of all processes
 	completed=[]
-	
+	#rQueue=copy.deepcopy(process_list) 
+	rQueue=list(filter(lambda obj : obj.arrival <= time, process_list))
+
 	while rQueue!=[]:
-		skip=None
+	
 		print("\nTime:", time)
 		#quantum time
-		quantum=math.ceil(sum(process.rbt for process in rQueue)/len(rQueue))
+		quantum=math.floor(sum(process.rbt for process in process_list)/len(process_list))
 		print("Quantum:", quantum)
 		#calculating response ratios
 		print("RRs:")
 		for process in rQueue:
-			#if process not in skip:
 			rr=(process.uwt+process.rbt)/process.rbt 
 			print(process.name, rr)
 			process.rr=rr
@@ -52,8 +56,10 @@ def HRRN(process_list):
 
 
 		#selecting process with the highest reponse ratio
+		start=t.perf_counter()
 		HRR=max(rQueue, key=attrgetter('rr')) 
-		
+		end=t.perf_counter()
+		perf=end-start
 
 		print("-> %s added." % HRR.name) 
 		
@@ -64,9 +70,11 @@ def HRRN(process_list):
 			print("%s is complete." % HRR.name)
 			#removing completed processes
 			rQueue.remove(HRR)
+			process_list.remove(HRR)
 			time+=HRR.rbt 	
 			completed.append(HRR)
 			time_passed=HRR.rbt
+			rQueue=list(filter(lambda obj : obj.arrival <= time, process_list)) #updating rqueue
 
 
 
@@ -77,13 +85,13 @@ def HRRN(process_list):
 			time+=quantum
 			print("Incomplete >> RBT:", HRR.rbt)
 			time_passed=quantum
+			rQueue=list(filter(lambda obj : obj.arrival <= time, process_list)) #updating rqueue
 
 		#update waiting times of all other process
 
 	
 		for process in rQueue:
 			if process != HRR:	 
-				print(process.name)
 				process.uwt+=time_passed
 				
 
@@ -92,17 +100,21 @@ def HRRN(process_list):
 		
 		cs+=1
 
-		print("\nName\tUWT\tRBT\tRR")
-		for process in process_list:
+		print("\n\t\tName\tUWT\tRBT\tRR")
+		for process in static_process_list:
 			for p in rQueue:
 				if process.name==p.name:
 					process=p
+					print('Arrived',end='>\t')
 					break 
 			else:
 				for p in completed:
 					if process.name==p.name:
 						process=p
+						print('Completed',end='>\t')
 						break
+				else:
+					print('Not Arrived', end='>\t')
 
 			print(process.name+"\t"+str(process.uwt)+"\t"+str(process.rbt)+"\t"+str(process.rr))
 
@@ -116,16 +128,17 @@ def HRRN(process_list):
 	print("\nAverage waiting time: \t\t\t%f" % avg_wt)
 	print("Average turnaround time: \t\t%f" % avg_tat)
 	print("Total number of context switches: \t%d" % int(cs - 1))
+	print("Seconds taken for max function: \t%f" % perf)
 
 
+if __name__ == '__main__':
+	process_list = []
+	process_list.append(Process('P1',80,0))
+	process_list.append(Process('P2',72,2))
+	process_list.append(Process('P3',65,3))
+	process_list.append(Process('P4',50,4))
+	process_list.append(Process('P5',43,5))
+	#time_slice = math.floor((3+6+4+5+2)/5)
+	#print(time_slice)
 
-process_list = []
-process_list.append(Process('P1',80,0))
-process_list.append(Process('P2',72,2))
-process_list.append(Process('P3',65,3))
-process_list.append(Process('P4',50,4))
-process_list.append(Process('P5',43,5))
-#time_slice = math.floor((3+6+4+5+2)/5)
-#print(time_slice)
-
-HRRN(process_list)
+	HRRN(process_list)
