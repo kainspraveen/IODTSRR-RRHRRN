@@ -51,10 +51,17 @@ def iodstrr(threads):
 	while(True):
 		done=True
 
+
 		thread=Thread(target=task, args=(mark,threads, t,rem_bt))
 		thread.daemon = True
 		thread.start()
 		#thread.join()
+
+		for i in range(mark,len(threads)):
+			if(threads[i].start <= t):
+				rem_bt.append(threads[i])
+				mark=i
+
 		if(len(rem_bt)==0):
 			t+=1
 			continue
@@ -85,11 +92,17 @@ def iodstrr(threads):
 					t = t + rem_bt[i].rburst 
 					rem_bt[i].waiting = t - rem_bt[i].burst 
 					rem_bt[i].rburst = 0
+
 			#time.sleep(100)
 
 		if(done == True):
 			break
 			
+
+
+		if(done == True):
+			break
+
 
 	print("TurnAround Times:")
 	j=1
@@ -122,4 +135,7 @@ new.join()
 
   
   
-  
+
+iodstrr(threads)
+
+
