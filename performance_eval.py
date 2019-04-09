@@ -35,7 +35,9 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 		Pnames.append(Pname)
 
 		process_list.append(Process(Pname,g_burst,g_arrival))
+		thread_list.append(MyThread(Pname, g_burst,g_arrival))
 		perf=HRRN(process_list,verbose=False,performance_mode=True)
+
 		
 		
 		
@@ -78,4 +80,5 @@ if __name__ == '__main__':
 			arrive=True
 		else: 
 			arrive=False
-		process_list=process_generator(n,behaviour=beh,arrival_times=arrive)
+		
+		process_generator(n,behaviour=beh,arrival_times=arrive)

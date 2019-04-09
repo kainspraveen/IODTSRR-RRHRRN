@@ -22,12 +22,16 @@ threads=[]
 
 class DQRR :
 
-	def __init__(self) :
+	def __init__(self, threads) :
 
 		self.threads = []
 		self.t = 0
 		self.mark = 0
 		self.rem_bt = []
+
+		self.wait=0
+		self.turn=0
+		self.cs = -1
 
 
 	def task(self):
@@ -152,6 +156,8 @@ class DQRR :
 
 			done = self.apply_cpu_time(quantum)
 
+			cs+=1
+
 			if(done == True):
 				break
 				
@@ -161,29 +167,27 @@ class DQRR :
 				break
 
 
-		print("TurnAround Times:")
+	def stats(self) :
+
 		j=1
-		wait=0
-		turn=0
+
 		
 		for i in self.threads:
-			print("Process", j," : ", end="")
-			print(i.burst+i.waiting)
-			turn+=(i.burst+i.waiting)
+
+			self.turn+=(i.burst+i.waiting)
 			j+=1
 
-		print("Waiting Times: ")
+
+		
 		j=1
 		for i in self.threads:
-			print("Process", j, ":", end="")
-			print(i.waiting)
+
 			wait+=i.waiting
 			j+=1
 
-		wait=wait/len(self.threads)
-		turn=turn/len(self.threads)
-		print("Average Waiting Time :", wait)
-		print("Average TurnAround Time: ", turn)
+		self.wait=self.wait/len(self.threads)
+		self.turn=turn/len(self.threads)
+
 
 '''new=Thread(target=iodstrr, args=(threads,))
 new.start()
@@ -196,7 +200,7 @@ for i in task_thread :
   
 
 
-obj = DQRR()
+'''obj = DQRR()
 obj.fill_threadList()
-obj.iodstrr()
+obj.iodstrr()'''
 
