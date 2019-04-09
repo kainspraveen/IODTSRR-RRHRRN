@@ -10,6 +10,7 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 	CSs=[]
 	Pnames=[]
 	pperc=0
+	processes=[]
 	printer("Generating...")
 	if behaviour=='inc':
 		g_burst=1
@@ -33,7 +34,7 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 			g_arrival=random.randint(1,100)
 		Pname='P'+str(i+1)
 		Pnames.append(Pname)
-
+		processes.append(i+1)
 		process_list.append(Process(Pname,g_burst,g_arrival))
 		thread_list.append(MyThread(Pname, g_burst,g_arrival))
 		perf=HRRN(process_list,verbose=False,performance_mode=True)
@@ -51,7 +52,7 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 		avg_TATs.append(perf[1])
 		CSs.append(perf[2])
 
-	data=pd.DataFrame({'no_of_processes' : i,
+	data=pd.DataFrame({'no_of_processes' : processes,
 					   'avg_wait_time' : avg_WTs,
 					   'avg_turnaround_time' : avg_TATs,	
 					   'context_switches' : CSs})
@@ -72,7 +73,7 @@ if __name__ == '__main__':
 		arrives=[True,False]
 		for beh in behs:
 			for arrive in arrives:
-				process_list=process_generator(n,behaviour=beh,arrival_times=arrive)
+				process_generator(n,behaviour=beh,arrival_times=arrive)
 	else:
 		beh=input("Specify burst generation behaviour [inc,dec,rand]:")
 		arrive=input("Arrival times? [Y/n]: ")
@@ -80,5 +81,5 @@ if __name__ == '__main__':
 			arrive=True
 		else: 
 			arrive=False
-		
-		process_generator(n,behaviour=beh,arrival_times=arrive)
+
+	process_generator(n,behaviour=beh,arrival_times=arrive)	
