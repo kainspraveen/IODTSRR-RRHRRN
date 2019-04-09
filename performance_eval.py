@@ -34,7 +34,7 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 			g_arrival=random.randint(1,100)
 		Pname='P'+str(i+1)
 		Pnames.append(Pname)
-		processes.append(i)
+		processes.append(i+1)
 		process_list.append(Process(Pname,g_burst,g_arrival))
 		perf=HRRN(process_list,verbose=False,performance_mode=True)
 		
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 		arrives=[True,False]
 		for beh in behs:
 			for arrive in arrives:
-				process_list=process_generator(n,behaviour=beh,arrival_times=arrive)
+				process_generator(n,behaviour=beh,arrival_times=arrive)
 	else:
 		beh=input("Specify burst generation behaviour [inc,dec,rand]:")
 		arrive=input("Arrival times? [Y/n]: ")
@@ -79,4 +79,4 @@ if __name__ == '__main__':
 			arrive=True
 		else: 
 			arrive=False
-		process_list=process_generator(n,behaviour=beh,arrival_times=arrive)
+		process_generator(n,behaviour=beh,arrival_times=arrive)

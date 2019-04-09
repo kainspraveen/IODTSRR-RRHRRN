@@ -31,7 +31,7 @@ def printer(info, flag=True,end='\n',flush=True):
 
 def HRRN(static_process_list,verbose=True,performance_mode=False):
 	n = len(static_process_list)
-	cs=0
+	cs=-1
 	process_list=sorted(static_process_list) 
 	time=process_list[0].arrival #assigning time to the shortest arrival time of all processes
 	completed=[]
@@ -137,7 +137,7 @@ def HRRN(static_process_list,verbose=True,performance_mode=False):
 
 		print("\nAverage waiting time: \t\t\t%f" % avg_wt)
 		print("Average turnaround time: \t\t%f" % avg_tat)
-		print("Total number of context switches: \t%d" % int(cs - 1))
+		print("Total number of context switches: \t%d" % cs)
 		print("Seconds taken for max function: \t%f" % perf)
 		print("END")
 
