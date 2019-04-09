@@ -10,6 +10,7 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 	CSs=[]
 	Pnames=[]
 	pperc=0
+	processes=[]
 	printer("Generating...")
 	if behaviour=='inc':
 		g_burst=1
@@ -33,7 +34,7 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 			g_arrival=random.randint(1,100)
 		Pname='P'+str(i+1)
 		Pnames.append(Pname)
-
+		processes.append(i)
 		process_list.append(Process(Pname,g_burst,g_arrival))
 		perf=HRRN(process_list,verbose=False,performance_mode=True)
 		
@@ -49,7 +50,7 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 		avg_TATs.append(perf[1])
 		CSs.append(perf[2])
 
-	data=pd.DataFrame({'no_of_processes' : i,
+	data=pd.DataFrame({'no_of_processes' : processes,
 					   'avg_wait_time' : avg_WTs,
 					   'avg_turnaround_time' : avg_TATs,	
 					   'context_switches' : CSs})
