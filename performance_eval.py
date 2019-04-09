@@ -49,7 +49,7 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 		avg_TATs.append(perf[1])
 		CSs.append(perf[2])
 
-	data=pd.DataFrame({'process_name' : Pnames,
+	data=pd.DataFrame({'no_of_processes' : i,
 					   'avg_wait_time' : avg_WTs,
 					   'avg_turnaround_time' : avg_TATs,	
 					   'context_switches' : CSs})
