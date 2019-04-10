@@ -3,7 +3,7 @@ from operator import attrgetter
 import time as t
 import copy
 
-class Process :
+class Process:
 	def __init__(self, name = None, burst = 0, arrival = 0, rr = 0, rbt = 0, uwt = 0):
 		self.name = name
 		self.burst = burst  	#burst time
