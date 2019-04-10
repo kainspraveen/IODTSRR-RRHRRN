@@ -34,25 +34,29 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 	printer("Generating...")
 	if behaviour=='inc':
 		g_burst=1
+		g_arrival=1
 	elif behaviour=='dec':
 		g_burst=n*4+1
+		g_arrival=n*4+1
 
 	for i in range(n):
 		if behaviour=='inc':
 			g_burst+=random.randint(1,4)
+			g_arrival+=random.randint(1,4)
 
 		elif behaviour=='rand':
 			g_burst=random.randint(1,100)
+			g_arrival=random.randint(1,100)
 
 		elif behaviour=='dec':
 			g_burst-=random.randint(1,4)
+			g_arrival-=random.randint(1,4)
+
 		else:
 			print("Invalid argument provided.")
 			exit()
 		if arrival_times==False:
 			g_arrival=0
-		else:
-			g_arrival=random.randint(1,100)
 
 		Pname='P'+str(i+1)
 		Pnames.append(Pname)
