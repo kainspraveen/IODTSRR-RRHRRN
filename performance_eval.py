@@ -65,13 +65,13 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 
 
 		hrrn_list.append(Process(Pname,g_burst,g_arrival))
-		#dqrr_list.append(MyThread(id = Pname, burst = g_burst,start = g_arrival))
+		dqrr_list.append(MyThread(id = Pname, burst = g_burst,start = g_arrival))
 
 		hrrn_perf=HRRN(hrrn_list,verbose=False,performance_mode=True)
 
 		obj = DQRR(deepcopy(dqrr_list))
-		obj.insertQue_thread.daemon = True
-		obj.insertQue_thread.start()
+		#obj.insertQue_thread.daemon = True
+		#obj.insertQue_thread.start()
 		obj.iodstrr()
 
 		dqrr_perf = obj.stats()
