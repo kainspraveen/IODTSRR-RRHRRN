@@ -5,14 +5,14 @@ import random
 import queue
 from statistics import median
 from math import floor
-
-
 from hrrn import HRRN, Process, printer
 from dqrr import MyThread, DQRR
 import pandas as pd
-import random
 import math
 from copy import deepcopy
+import seaborn as sns
+import os
+import matplotlib.pyplot as plt
 
 
 
@@ -31,7 +31,6 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 	Pnames=[]
 	pperc=0
 	processes=[]
-	printer("Generating...")
 	if behaviour=='inc':
 		g_burst=1
 	elif behaviour=='dec':
@@ -105,11 +104,89 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 	Fname=str(n)+'_'+behaviour+'_'+arrival_state+'.csv'
 	printer("\n%s generated." % Fname, verbose)
 	data.to_csv(Fname, index=False)
+
+	TATcols=['dqrr_avg_turnaround_time', 'hrrn_avg_turnaround_time','no_of_processes']
+	WTcols=['dqrr_avg_wait_time', 'hrrn_avg_wait_time','no_of_processes']
+	CScols=['dqrr_context_switches', 'hrrn_context_switches','no_of_processes']
+
+	df=data
+	cols=df.columns
+
+	df_TAT=pd.DataFrame(df[TATcols])
+	df_WT=pd.DataFrame(df[WTcols])
+	df_CS=pd.DataFrame(df[CScols])
+
+	printer("████████████████████", end='')
+
+	df_TAT.rename(columns={'dqrr_avg_turnaround_time':'DQRR', 'hrrn_avg_turnaround_time':'HRRN'}, inplace=True)
+	df_WT.rename(columns={'dqrr_avg_wait_time':'DQRR', 'hrrn_avg_wait_time':'HRRN'}, inplace=True)
+	df_CS.rename(columns={'dqrr_context_switches':'DQRR', 'hrrn_context_switches':'HRRN'}, inplace=True)
+
+
+	df_TAT_melted=pd.melt(df_TAT, id_vars='no_of_processes', value_name='time',var_name='Algorithms')
+	df_WT_melted=pd.melt(df_WT, id_vars='no_of_processes', value_name='time',var_name='Algorithms')
+	df_CS_melted=pd.melt(df_CS, id_vars='no_of_processes', value_name='switches',var_name='Algorithms')
+
+	printer("████████████████████", end='')
+	#TAT
+	#plt.figure()
+	sns.set(style='whitegrid', font='Calibri',palette='Reds_r')
+	TATplot=sns.lineplot(x='no_of_processes',y='time', hue='Algorithms', style='Algorithms', data=df_TAT_melted)
+
+
+	TATtitle=Fname.split('_')
+	TATtitle.append('| Turn Around Time')
+	TATtitle=' '.join(TATtitle)
+	TATplot.set_title(TATtitle)
+
+	TATfig=TATplot.get_figure()
+	TATname=Fname+'_TAT.png'
+	TATfig.savefig(TATname)
+	plt.clf()
+
+	printer("████████████████████", end='')
+
+	#WT
+	#plt.figure()
+	sns.set(style='whitegrid', font='Calibri',palette='Greens_r')
+	WTplot=sns.lineplot(x='no_of_processes',y='time', hue='Algorithms', style='Algorithms', data=df_WT_melted)
+
+	WTtitle=Fname.split('_')
+	WTtitle.append('| Waiting Time')
+	WTtitle=' '.join(WTtitle)
+	WTplot.set_title(WTtitle)
+
+	WTfig=WTplot.get_figure()
+	WTname=Fname+'_WT.png'
+	WTfig.savefig(WTname)
+	plt.clf()
+
+	printer("████████████████████", end='')
+
+	#CS
+	#plt.figure()
+	sns.set(style='whitegrid', font='Calibri',palette='Blues_r')
+	CSplot=sns.lineplot(x='no_of_processes',y='switches', hue='Algorithms', style='Algorithms', data=df_CS_melted)
+
+	CStitle=Fname.split('_')
+	CStitle.append('| Context Switches')
+	CStitle=' '.join(CStitle)
+	CSplot.set_title(CStitle)
+
+	CSfig=CSplot.get_figure()
+	CSname=Fname+'_CS.png'
+	CSfig.savefig(CSname)
+	plt.clf()
+
+	printer("████████████████", end='')
+	
+	print("\n%s, %s, %s graphed.\n" % (TATname, WTname, CSname))
 	
 if __name__ == '__main__':
 	n=int(input("Enter number of processes to generate: "))
 	comb=input("Generate for all behaviours? [Y/n]: ")
 	if comb=='y' or comb=='Y':
+		printer("Generating...")
 		behs=['inc','dec','rand']
 		arrives=[True,False]
 		for beh in behs:
@@ -118,6 +195,7 @@ if __name__ == '__main__':
 	else:
 		beh=input("Specify burst generation behaviour [inc,dec,rand]:")
 		arrive=input("Arrival times? [Y/n]: ")
+		printer("Generating...")
 		if arrive=='y' or arrive=='Y':
 			arrive=True
 		else: 
