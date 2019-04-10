@@ -36,6 +36,8 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 	elif behaviour=='dec':
 		g_burst=n*4+1
 
+	start_skip=True
+
 	
 	for i in range(n):
 		if behaviour=='inc':
@@ -53,6 +55,9 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 			g_arrival=0
 		else:
 			g_arrival=random.randint(1,100)
+		if start_skip==True:
+			g_arrival=0
+			start_skip=False
 		Pname='P'+str(i+1)
 		Pnames.append(Pname)
 
@@ -64,12 +69,12 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 
 		hrrn_perf=HRRN(hrrn_list,verbose=False,performance_mode=True)
 
-		#obj = DQRR(deepcopy(dqrr_list))
-		#obj.insertQue_thread.daemon = True
-		#obj.insertQue_thread.start()
-		#obj.iodstrr()
+		obj = DQRR(deepcopy(dqrr_list))
+		obj.insertQue_thread.daemon = True
+		obj.insertQue_thread.start()
+		obj.iodstrr()
 
-		dqrr_perf = [0,0,0] #obj.stats()
+		dqrr_perf = obj.stats()
 
 
 		
