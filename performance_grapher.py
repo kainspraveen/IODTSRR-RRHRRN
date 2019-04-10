@@ -5,7 +5,7 @@ import random
 import queue
 from statistics import median
 from math import floor
-from hrrn import HRRN, Process, printer
+from err import ERR, Process, printer
 from dqrr import MyThread, DQRR
 import pandas as pd
 import math
@@ -17,12 +17,12 @@ import matplotlib.pyplot as plt
 
 
 def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
-	hrrn_list=[]
+	err_list=[]
 	dqrr_list=[]
 	
-	hrrn_avg_WTs=[]
-	hrrn_avg_TATs=[]
-	hrrn_CSs=[]
+	err_avg_WTs=[]
+	err_avg_TATs=[]
+	err_CSs=[]
 
 	dqrr_avg_WTs=[]
 	dqrr_avg_TATs=[]
@@ -59,10 +59,10 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 		processes.append(i+1)
 
 
-		hrrn_list.append(Process(Pname,g_burst,g_arrival))
+		err_list.append(Process(Pname,g_burst,g_arrival))
 		dqrr_list.append(MyThread(id = Pname, burst = g_burst,start = g_arrival))
 
-		hrrn_perf=HRRN(hrrn_list,verbose=False,performance_mode=True)
+		err_perf=ERR(err_list,verbose=False,performance_mode=True)
 
 		obj = DQRR(deepcopy(dqrr_list))
 		#obj.insertQue_thread.daemon = True
@@ -80,9 +80,9 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 			pperc=perc
 			printer("█", end='')
 
-		hrrn_avg_WTs.append(hrrn_perf[0])
-		hrrn_avg_TATs.append(hrrn_perf[1])
-		hrrn_CSs.append(hrrn_perf[2])
+		err_avg_WTs.append(err_perf[0])
+		err_avg_TATs.append(err_perf[1])
+		err_CSs.append(err_perf[2])
 
 		dqrr_avg_WTs.append(dqrr_perf[0])
 		dqrr_avg_TATs.append(dqrr_perf[1])
@@ -90,9 +90,9 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 
 	data=pd.DataFrame({
 						'no_of_processes' : processes,
-						'hrrn_avg_wait_time' : hrrn_avg_WTs,
-					 	'hrrn_avg_turnaround_time' : hrrn_avg_TATs,	
-						'hrrn_context_switches' : hrrn_CSs,
+						'err_avg_wait_time' : err_avg_WTs,
+					 	'err_avg_turnaround_time' : err_avg_TATs,	
+						'err_context_switches' : err_CSs,
 						'dqrr_avg_wait_time' : dqrr_avg_WTs,
 						'dqrr_avg_turnaround_time' : dqrr_avg_TATs,	
 						'dqrr_context_switches' : dqrr_CSs,
@@ -106,9 +106,9 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 	printer("\n%s generated." % Fname, verbose)
 	data.to_csv('Data/'+Fname, index=False)
 
-	TATcols=['dqrr_avg_turnaround_time', 'hrrn_avg_turnaround_time','no_of_processes']
-	WTcols=['dqrr_avg_wait_time', 'hrrn_avg_wait_time','no_of_processes']
-	CScols=['dqrr_context_switches', 'hrrn_context_switches','no_of_processes']
+	TATcols=['dqrr_avg_turnaround_time', 'err_avg_turnaround_time','no_of_processes']
+	WTcols=['dqrr_avg_wait_time', 'err_avg_wait_time','no_of_processes']
+	CScols=['dqrr_context_switches', 'err_context_switches','no_of_processes']
 
 	df=data
 	cols=df.columns
@@ -119,9 +119,9 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 
 	printer("████████████████████", end='')
 
-	df_TAT.rename(columns={'dqrr_avg_turnaround_time':'DQRR', 'hrrn_avg_turnaround_time':'HRRN'}, inplace=True)
-	df_WT.rename(columns={'dqrr_avg_wait_time':'DQRR', 'hrrn_avg_wait_time':'HRRN'}, inplace=True)
-	df_CS.rename(columns={'dqrr_context_switches':'DQRR', 'hrrn_context_switches':'HRRN'}, inplace=True)
+	df_TAT.rename(columns={'dqrr_avg_turnaround_time':'DQRR', 'err_avg_turnaround_time':'err'}, inplace=True)
+	df_WT.rename(columns={'dqrr_avg_wait_time':'DQRR', 'err_avg_wait_time':'err'}, inplace=True)
+	df_CS.rename(columns={'dqrr_context_switches':'DQRR', 'err_context_switches':'err'}, inplace=True)
 
 
 	df_TAT_melted=pd.melt(df_TAT, id_vars='no_of_processes', value_name='time',var_name='Algorithms')

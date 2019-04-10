@@ -8,7 +8,7 @@ from copy import deepcopy
 import threading
 from operator import attrgetter
 lock = threading.Lock()
-from hrrn import printer
+from err import printer
 
 class MyThread:
 	def __init__(self,id= "",burst = 0,start = 0):
