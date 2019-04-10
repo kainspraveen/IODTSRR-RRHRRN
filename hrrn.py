@@ -51,13 +51,15 @@ def HRRN(static_process_list,verbose=True,performance_mode=False):
 		#calculating response ratios
 		printer("RRs:", verbose)
 		for process in rQueue:
-			rr=(process.uwt+process.rbt)/process.rbt 
+			rr=(process.uwt*math.log(len(rQueue))+process.rbt**2)/math.log(process.rbt+1) 
+
 			printer(process.name+':'+str(rr), verbose)
 			process.rr=rr
+
 		
 
 
-		#selecting process with the highest reponse ratio
+		#selecting process with the highest response ratio
 		start=t.perf_counter()
 		HRR=max(rQueue, key=attrgetter('rr')) 
 		end=t.perf_counter()
