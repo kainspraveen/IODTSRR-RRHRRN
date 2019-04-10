@@ -60,22 +60,17 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 
 
 		hrrn_list.append(Process(Pname,g_burst,g_arrival))
-		dqrr_list.append(MyThread(id = Pname, burst = g_burst,start = g_arrival))
+		#dqrr_list.append(MyThread(id = Pname, burst = g_burst,start = g_arrival))
 
 		hrrn_perf=HRRN(hrrn_list,verbose=False,performance_mode=True)
-		#print(Pname, "Burst", g_burst, "Arrival", g_arrival)
 
-		obj = DQRR(deepcopy(dqrr_list))
-		obj.insertQue_thread.daemon = True
-		obj.insertQue_thread.start()
+		#obj = DQRR(deepcopy(dqrr_list))
+		#obj.insertQue_thread.daemon = True
+		#obj.insertQue_thread.start()
+		#obj.iodstrr()
 
-		print(threading.active_count())
+		dqrr_perf = [0,0,0] #obj.stats()
 
-		obj.iodstrr()
-
-		dqrr_perf = obj.stats()
-
-		#print(dqrr_perf)
 
 		
 		perc=math.ceil(((i+1)/n)*100)
@@ -91,33 +86,6 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 		dqrr_avg_WTs.append(dqrr_perf[0])
 		dqrr_avg_TATs.append(dqrr_perf[1])
 		dqrr_CSs.append(dqrr_perf[2])
-
-
-	'''file =  open("process_list1.txt","w")
-
-	
-
-	for i in hrrn_list :
-		string =   i.name +  " "
-		file.write(string)
-
-	file.write("\n")
-
-	for i in hrrn_list :
-		string = str(i.burst) + " "
-		file.write(string)
-
-	file.write("\n")
-
-	for i in hrrn_list :
-		string =  str(i.arrival) +  " "
-		file.write(string)
-
-	file.write("\n") 
-
-	file.close()'''
-
-
 
 	data=pd.DataFrame({
 						'no_of_processes' : processes,
