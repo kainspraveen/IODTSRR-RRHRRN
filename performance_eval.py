@@ -104,9 +104,11 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 	
 	Fname=str(n)+'_'+behaviour+'_'+arrival_state+'.csv'
 	printer("\n%s generated." % Fname, verbose)
-	data.to_csv(Fname, index=False)
+	data.to_csv('Data/'+Fname, index=False)
 	
 if __name__ == '__main__':
+	os.makedirs('Data')
+	os.makedirs('Graphs')
 	n=int(input("Enter number of processes to generate: "))
 	comb=input("Generate for all behaviours? [Y/n]: ")
 	if comb=='y' or comb=='Y':
@@ -122,5 +124,4 @@ if __name__ == '__main__':
 			arrive=True
 		else: 
 			arrive=False
-
-	process_generator(n,behaviour=beh,arrival_times=arrive)	
+		process_generator(n,behaviour=beh,arrival_times=arrive)	

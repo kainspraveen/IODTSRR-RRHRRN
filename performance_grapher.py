@@ -104,7 +104,7 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 	
 	Fname=str(n)+'_'+behaviour+'_'+arrival_state+'.csv'
 	printer("\n%s generated." % Fname, verbose)
-	data.to_csv(Fname, index=False)
+	data.to_csv('Data/'+Fname, index=False)
 
 	TATcols=['dqrr_avg_turnaround_time', 'hrrn_avg_turnaround_time','no_of_processes']
 	WTcols=['dqrr_avg_wait_time', 'hrrn_avg_wait_time','no_of_processes']
@@ -129,8 +129,9 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 	df_CS_melted=pd.melt(df_CS, id_vars='no_of_processes', value_name='switches',var_name='Algorithms')
 
 	printer("████████████████████", end='')
+
 	#TAT
-	#plt.figure()
+
 	sns.set(style='whitegrid', font='Calibri',palette='Reds_r')
 	TATplot=sns.lineplot(x='no_of_processes',y='time', hue='Algorithms', style='Algorithms', data=df_TAT_melted)
 
@@ -142,13 +143,13 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 
 	TATfig=TATplot.get_figure()
 	TATname=Fname+'_TAT.png'
-	TATfig.savefig(TATname)
+	TATfig.savefig('Graphs/'+TATname)
 	plt.clf()
 
 	printer("████████████████████", end='')
 
 	#WT
-	#plt.figure()
+
 	sns.set(style='whitegrid', font='Calibri',palette='Greens_r')
 	WTplot=sns.lineplot(x='no_of_processes',y='time', hue='Algorithms', style='Algorithms', data=df_WT_melted)
 
@@ -159,13 +160,13 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 
 	WTfig=WTplot.get_figure()
 	WTname=Fname+'_WT.png'
-	WTfig.savefig(WTname)
+	WTfig.savefig('Graphs/'+WTname)
 	plt.clf()
 
 	printer("████████████████████", end='')
 
 	#CS
-	#plt.figure()
+
 	sns.set(style='whitegrid', font='Calibri',palette='Blues_r')
 	CSplot=sns.lineplot(x='no_of_processes',y='switches', hue='Algorithms', style='Algorithms', data=df_CS_melted)
 
@@ -176,14 +177,17 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 
 	CSfig=CSplot.get_figure()
 	CSname=Fname+'_CS.png'
-	CSfig.savefig(CSname)
+	CSfig.savefig('Graphs/'+CSname)
 	plt.clf()
 
 	printer("████████████████", end='')
+
 	
 	print("\n%s, %s, %s graphed.\n" % (TATname, WTname, CSname))
 	
 if __name__ == '__main__':
+	os.makedirs('Data')
+	os.makedirs('Graphs')
 	n=int(input("Enter number of processes to generate: "))
 	comb=input("Generate for all behaviours? [Y/n]: ")
 	if comb=='y' or comb=='Y':
@@ -201,5 +205,4 @@ if __name__ == '__main__':
 			arrive=True
 		else: 
 			arrive=False
-
-	process_generator(n,behaviour=beh,arrival_times=arrive)	
+		process_generator(n,behaviour=beh,arrival_times=arrive)	
