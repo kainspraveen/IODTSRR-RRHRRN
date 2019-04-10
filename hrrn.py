@@ -38,14 +38,7 @@ def HRRN(static_process_list,verbose=True,performance_mode=False):
 	#rQueue=copy.deepcopy(process_list) 
 	rQueue=list(filter(lambda obj : obj.arrival <= time, process_list))
 	
-	"""if verbose==True:
-		print("\n\t\tName\tUWT\tRBT\tRR")
-		for process in static_process_list:
-		
-			print('Not Arrived', end='>\t')
 
-			print(process.name+"\t"+str(process.uwt)+"\t"+str(process.rbt)+"\t"+str(process.rr))
-	"""
 	while process_list!=[]:
 		if rQueue==[]:
 			process_list.sort() 
@@ -139,7 +132,6 @@ def HRRN(static_process_list,verbose=True,performance_mode=False):
 		print("Average turnaround time: \t\t%f" % avg_tat)
 		print("Total number of context switches: \t%d" % cs)
 		print("Seconds taken for max function: \t%f" % perf)
-		print("END")
 
 	if performance_mode==True:
 		return [avg_wt,avg_tat,cs]
@@ -154,5 +146,6 @@ if __name__ == '__main__':
 	#time_slice = math.floor((3+6+4+5+2)/5)
 	#print(time_slice)
 
-	HRRN(process_list, verbose=False)
+
+	HRRN(process_list, verbose=True)
 

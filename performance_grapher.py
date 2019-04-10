@@ -67,13 +67,14 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 		obj = DQRR(deepcopy(dqrr_list))
 		#obj.insertQue_thread.daemon = True
 		#obj.insertQue_thread.start()
+
 		obj.iodstrr()
 
 		dqrr_perf = obj.stats()
 
 
-		
 		perc=math.ceil(((i+1)/n)*100)
+
 
 		if pperc!=perc:
 			pperc=perc
@@ -185,6 +186,8 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 	print("\n%s, %s, %s graphed.\n" % (TATname, WTname, CSname))
 	
 if __name__ == '__main__':
+	#os.remove('Data')
+	#os.remove('Graphs')
 	os.makedirs('Data')
 	os.makedirs('Graphs')
 	n=int(input("Enter number of processes to generate: "))

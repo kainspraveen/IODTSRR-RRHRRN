@@ -1,13 +1,13 @@
 import threading
 from threading import Thread
 import time
-import random
 import queue
-from statistics import median
+#from statistics import median
 from math import floor
-
+import os
 
 from hrrn import HRRN, Process, printer
+
 from dqrr import MyThread, DQRR
 import pandas as pd
 import random
@@ -68,11 +68,10 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 		obj = DQRR(deepcopy(dqrr_list))
 		#obj.insertQue_thread.daemon = True
 		#obj.insertQue_thread.start()
+
 		obj.iodstrr()
 
 		dqrr_perf = obj.stats()
-
-
 		
 		perc=math.ceil(((i+1)/n)*100)
 
@@ -104,11 +103,11 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 	
 	Fname=str(n)+'_'+behaviour+'_'+arrival_state+'.csv'
 	printer("\n%s generated." % Fname, verbose)
-	data.to_csv('Data/'+Fname, index=False)
+	data.to_csv('CSVs/'+Fname, index=False)
 	
+
 if __name__ == '__main__':
-	os.makedirs('Data')
-	os.makedirs('Graphs')
+	os.makedirs('CSVs')
 	n=int(input("Enter number of processes to generate: "))
 	comb=input("Generate for all behaviours? [Y/n]: ")
 	if comb=='y' or comb=='Y':
