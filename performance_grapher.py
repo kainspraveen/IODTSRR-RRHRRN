@@ -119,9 +119,9 @@ def process_generator(n=100,behaviour='inc',arrival_times=False, verbose=True):
 
 	printer("████████████████████", end='')
 
-	df_TAT.rename(columns={'dqrr_avg_turnaround_time':'DQRR', 'err_avg_turnaround_time':'err'}, inplace=True)
-	df_WT.rename(columns={'dqrr_avg_wait_time':'DQRR', 'err_avg_wait_time':'err'}, inplace=True)
-	df_CS.rename(columns={'dqrr_context_switches':'DQRR', 'err_context_switches':'err'}, inplace=True)
+	df_TAT.rename(columns={'dqrr_avg_turnaround_time':'Dynamic Quantum Re-adjusted Round Robin', 'err_avg_turnaround_time':'Enhanced Reactive Ratio'}, inplace=True)
+	df_WT.rename(columns={'dqrr_avg_wait_time':'Dynamic Quantum Re-adjusted Round Robin', 'err_avg_wait_time':'Enhanced Reactive Ratio'}, inplace=True)
+	df_CS.rename(columns={'dqrr_context_switches':'Dynamic Quantum Re-adjusted Round Robin', 'err_context_switches':'Enhanced Reactive Ratio'}, inplace=True)
 
 
 	df_TAT_melted=pd.melt(df_TAT, id_vars='no_of_processes', value_name='time',var_name='Algorithms')
