@@ -29,7 +29,7 @@ def printer(info, flag=True,end='\n',flush=True):
 	if flag==True:
 		print(info,end=end,flush=flush)
 
-def run(static_process_list,verbose=True,performance_mode=False):
+def HRRN(static_process_list,verbose=True,performance_mode=False):
 	n = len(static_process_list)
 	cs=-1
 	process_list=sorted(static_process_list) 
@@ -51,33 +51,31 @@ def run(static_process_list,verbose=True,performance_mode=False):
 		#calculating response ratios
 		printer("RRs:", verbose)
 		for process in rQueue:
-			rr=(process.uwt*math.log(len(rQueue))+process.rbt**2)/math.log(process.rbt+1) 
-
+			rr=(process.uwt+process.rbt)/process.rbt 
 			printer(process.name+':'+str(rr), verbose)
 			process.rr=rr
-
 		
 
 
-		#selecting process with the highest response ratio
+		#selecting process with the highest reponse ratio
 		start=t.perf_counter()
-		err=max(rQueue, key=attrgetter('rr')) 
+		HRR=max(rQueue, key=attrgetter('rr')) 
 		end=t.perf_counter()
 		perf=end-start
 
-		printer("-> %s added." % err.name, verbose) 
+		printer("-> %s added." % HRR.name, verbose) 
 		
 
-		printer("RBT: %d" % err.rbt, verbose)
+		printer("RBT: %d" % HRR.rbt, verbose)
 
-		if (err.rbt<=quantum):
-			printer("%s is complete." % err.name, verbose)
+		if (HRR.rbt<=quantum):
+			printer("%s is complete." % HRR.name, verbose)
 			#removing completed processes
-			rQueue.remove(err)
-			process_list.remove(err)
-			time+=err.rbt 	
-			completed.append(err)
-			time_passed=err.rbt
+			rQueue.remove(HRR)
+			process_list.remove(HRR)
+			time+=HRR.rbt 	
+			completed.append(HRR)
+			time_passed=HRR.rbt
 			rQueue=list(filter(lambda obj : obj.arrival <= time, process_list)) #updating rqueue
 
 
@@ -85,9 +83,9 @@ def run(static_process_list,verbose=True,performance_mode=False):
 		else:
 			#updating remaining burst time
 	
-			err.rbt-=quantum
+			HRR.rbt-=quantum
 			time+=quantum
-			printer("Incomplete >> RBT: %d" % err.rbt, verbose)
+			printer("Incomplete >> RBT: %d" % HRR.rbt, verbose)
 			time_passed=quantum
 			rQueue=list(filter(lambda obj : obj.arrival <= time, process_list)) #updating rqueue
 
@@ -95,7 +93,7 @@ def run(static_process_list,verbose=True,performance_mode=False):
 
 
 		for process in rQueue:
-			if process != err:	 
+			if process != HRR:	 
 				process.uwt+=time_passed
 
 					
@@ -149,5 +147,5 @@ if __name__ == '__main__':
 	#print(time_slice)
 
 
-	ERR(process_list, verbose=True)
+	HRRN(process_list, verbose=True)
 
